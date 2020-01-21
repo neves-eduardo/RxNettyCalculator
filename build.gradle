@@ -1,0 +1,66 @@
+apply plugin: "java"
+apply plugin: "application"
+apply plugin: "idea"
+
+sourceCompatibility = 1.8 
+targetCompatibility = 1.8 
+
+sourceSets {
+    main.java.srcDirs = ["src/main/java"]
+}
+
+def springVersion = '5.2.2.RELEASE'
+repositories {
+	mavenLocal() 
+    mavenCentral()
+    maven {
+       url "https://oss.sonatype.org/content/groups/public/"
+    } 
+}
+mainClassName="com.neves_eduardo.cloud.tema8.MainRunner"
+jar {
+	manifest {
+		attributes(
+				'Main-Class': "com.neves_eduardo.cloud.tema8.MainRunner"
+		)
+	}
+}
+
+task fatJar(type: Jar) {
+	manifest {
+		attributes 'Implementation-Title': 'Calculator app',
+				'Implementation-Version': 1.0,
+				'Main-Class': "com.neves_eduardo.cloud.tema8.MainRunner"
+	}
+	archiveName = "tema-08.jar"
+	doFirst {
+		from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+	}
+	exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+	with jar
+}
+
+
+
+dependencies {
+	compile group: 'org.springframework', name: 'spring-core', version: springVersion
+	compile group: 'org.springframework', name: 'spring-context', version: springVersion
+	compile group: 'org.springframework', name: 'spring-beans', version: springVersion
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
+	testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
+	testCompile group: 'junit', name: 'junit', version: '4.13'
+
+
+	compile([
+			 'org.slf4j:slf4j-api:1.7.0',
+			 'org.slf4j:slf4j-simple:1.7.0',
+			 'org.codehaus.jettison:jettison:1.2',
+			 'com.netflix.karyon:karyon2-core:2.2.0-rc.2',
+			 'com.netflix.karyon:karyon2-jersey-blocking:2.2.0-rc.2',
+			 'com.netflix.karyon:karyon2-archaius:2.2.0-rc.2',
+			 'com.netflix.karyon:karyon2-servo:2.2.0-rc.2',
+			 'com.netflix.karyon:karyon2-admin-web:2.2.0-rc.2',
+			 'com.netflix.karyon:karyon2-eureka:2.2.0-rc.2'
+	 		 ])
+
+}
