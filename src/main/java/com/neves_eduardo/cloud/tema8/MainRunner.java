@@ -20,7 +20,7 @@ public class MainRunner {
 		ApplicationContext appContext = new AnnotationConfigApplicationContext(AppConfig.class);
 
 		HealthCheckHandler healthCheckHandler = new HealthcheckResource();
-        Karyon.forRequestHandler(8081,
+        Karyon.forRequestHandler(8888,
                 new RxNettyHandler((Calculator) appContext.getBean("Calculator"),"/calculator","/healthcheck",
                         new HealthCheckEndpoint(healthCheckHandler)),
                 new KaryonBootstrapModule(healthCheckHandler),
