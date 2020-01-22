@@ -1,13 +1,13 @@
-apply plugin: "java"
-apply plugin: "application"
-apply plugin: "idea"
-
-sourceCompatibility = 1.8 
-targetCompatibility = 1.8 
-
-sourceSets {
-    main.java.srcDirs = ["src/main/java"]
+plugins {
+	id 'application'
+	id 'idea'
+	id 'java'
 }
+
+
+mainClassName='com.neves_eduardo.cloud.tema8.MainRunner'
+
+
 
 def springVersion = '5.2.2.RELEASE'
 repositories {
@@ -17,13 +17,16 @@ repositories {
        url "https://oss.sonatype.org/content/groups/public/"
     } 
 }
-mainClassName="com.neves_eduardo.cloud.tema8.MainRunner"
+
+
 jar {
 	manifest {
-		attributes(
+		attributes 'Implementation-Title': 'Calculator app',
+				'Implementation-Version': 1.0,
 				'Main-Class': "com.neves_eduardo.cloud.tema8.MainRunner"
-		)
 	}
+	exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+	from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
 task fatJar(type: Jar) {
